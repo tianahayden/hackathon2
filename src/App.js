@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import './App.css';
 import axios from 'axios';
-import { Chart } from "react-google-charts"
+import { Chart } from 'react-google-charts'
+import styled from 'styled-components'
 
 class NutritionInfo extends Component {
   render() {
     var food0name = this.props.inputs[0].name.charAt(0).toUpperCase() + this.props.inputs[0].name.slice(1)
     var food1name = this.props.inputs[1].name.charAt(0).toUpperCase() + this.props.inputs[1].name.slice(1)
     const pieOptions = {
-      title: "",
       pieHole: 0.6,
       slices: [
-        { color: "#2BB673" },
-        { color: "#d91e48" },
+        { color: "#E3CA4D" },
+        { color: "#B85673" },
       ],
       legend: {
         position: "bottom",
@@ -28,48 +27,50 @@ class NutritionInfo extends Component {
         width: "100%",
         height: "80%"
       },
-      fontName: "Roboto"
+      fontName: "Arial"
     };
 
     return (
-      <div>
-        <div>
-          <h1>{food0name} Nutrition Info</h1>
+      <NutritionWrapper>
+        <Left>
+          <Bold2>{food0name} Nutrition Info</Bold2>
           <p> Calories: {this.props.inputs[0].calories} </p>
           <p> Serving Size: {this.props.inputs[0].servingSize} </p>
           <p> Serving Unit: {this.props.inputs[0].servingUnit} </p>
-          <img src={'https://source.unsplash.com/600x500/?' + this.props.inputs[0].name} />
-          <div>
+          <Image src={'https://source.unsplash.com/600x500/?' + this.props.inputs[0].name} />
             <br></br>
+            <Bold2>% Daily Calories</Bold2>
+            <FlexRow>
             <Chart
               chartType="PieChart"
-              data={[["Food", "Overall Calories"], [this.props.inputs[0].name, this.props.inputs[0].calories], ["Remaining Calories *", 2500 - this.props.inputs[0].calories]]}
-              width={"100%"}
-              height={"400px"}
+              data={[["Food", "Overall Calories"], [food0name, this.props.inputs[0].calories], ["Remaining Calories *", 2500 - this.props.inputs[0].calories]]}
+              width={"60vh"}
+              height={"60vh"}
               options={pieOptions}
             />
+            </FlexRow>
             * Based on 2,500 Daily Calories
-          </div>
-        </div>
-        <div>
-          <h1>{food1name} Nutrition Info</h1>
+        </Left>
+        <Right>
+          <Bold2>{food1name} Nutrition Info</Bold2>
           <p> Calories: {this.props.inputs[1].calories} </p>
           <p> Serving Size: {this.props.inputs[1].servingSize} </p>
           <p> Serving Unit: {this.props.inputs[1].servingUnit} </p>
-          <img src={'https://source.unsplash.com/600x500/?' + this.props.inputs[1].name} />
-          <div>
+          <Image src={'https://source.unsplash.com/600x500/?' + this.props.inputs[1].name} />
             <br></br>
+            <Bold2>% Daily Calories</Bold2>
+            <FlexRow>
             <Chart
               chartType="PieChart"
-              data={[["Food", "Overall Calories"], [this.props.inputs[1].name, this.props.inputs[1].calories], ["Remaining Calories *", 2500 - this.props.inputs[0].calories]]}
-              width={"100%"}
-              height={"400px"}
+              data={[["Food", "Overall Calories"], [food1name, this.props.inputs[1].calories], ["Remaining Calories *", 2500 - this.props.inputs[0].calories]]}
+              width={"60vh"}
+              height={"60vh"}
               options={pieOptions}
             />
+            </FlexRow>
             * Based on 2,500 Daily Calories
-          </div>
-        </div>
-      </div>
+        </Right>
+      </NutritionWrapper>
     )
   }
 }
@@ -89,9 +90,9 @@ class Result extends Component {
       if ((result * this.props.inputs[1].servingSize) > 1) {
         return (
           <div>
-            <p>
-              You can eat {result * this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit} of {this.props.inputs[1].name}s per every {this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit} of {this.props.inputs[0].name}
-            </p>
+            <Card>
+              You can eat <Bold>{result * this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit}s</Bold> of {this.props.inputs[1].name}s per every <Bold>{this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit}</Bold> of {this.props.inputs[0].name}
+            </Card>
             <NutritionInfo
               inputs={this.props.inputs} />
           </div>
@@ -100,9 +101,9 @@ class Result extends Component {
       else {
         return (
           <div>
-            <p>
-              You can eat {result * this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit} of {this.props.inputs[1].name} per every {this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit} of {this.props.inputs[0].name}
-            </p>
+            <Card>
+              You can eat <Bold>{result * this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit}</Bold> of {this.props.inputs[1].name} per every <Bold>{this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit}</Bold> of {this.props.inputs[0].name}
+            </Card>
             <NutritionInfo
               inputs={this.props.inputs} />
           </div>
@@ -115,9 +116,9 @@ class Result extends Component {
       if ((result * this.props.inputs[0].servingSize) > 1) {
         return (
           <div>
-            <p>
-              You can eat {result * this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit} of {this.props.inputs[0].name}s per every {this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit} of {this.props.inputs[1].name}
-            </p>
+            <Card>
+              You can eat <Bold>{result * this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit}s</Bold> of {this.props.inputs[0].name}s per every <Bold>{this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit}</Bold> of {this.props.inputs[1].name}
+            </Card>
             <NutritionInfo
               inputs={this.props.inputs} />
           </div>
@@ -126,9 +127,9 @@ class Result extends Component {
       else {
         return (
           <div>
-            <p>
-              You can eat {result * this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit} of {this.props.inputs[0].name} per every {this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit} of {this.props.inputs[1].name}
-            </p>
+            <Card>
+              You can eat <Bold>{result * this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit}</Bold> of {this.props.inputs[0].name} per every <Bold>{this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit}</Bold> of {this.props.inputs[1].name}
+            </Card>
             <NutritionInfo
               inputs={this.props.inputs} />
           </div>
@@ -155,8 +156,8 @@ class InputOptions extends Component {
       this.props.inputs.map((e, i) => {
         return (
           <div key={i}>
-            <label>{e.label} </label>
-            <input name={e.label} placeholder={e.label} onChange={this.props.handleInputChange} />
+            <Label>{e.label} </Label>
+            <Input name={e.label} placeholder={e.label} onChange={this.props.handleInputChange} />
           </div>
         )
       })
@@ -255,10 +256,10 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1>Food Faceoff</h1>
-        </header>
+      <Wrapper>
+        <Title>
+          Food Faceoff
+        </Title>
         <p>
           Compare how much of one food you can eat versus another
           </p>
@@ -266,14 +267,117 @@ class App extends Component {
           inputs={this.state.inputs}
           handleInputChange={this.handleInputChange}
         />
-        <button onClick={this.handleClick}>Submit</button>
+        <Button onClick={this.handleClick}>Submit</Button>
         <Result
           inputs={this.state.inputs}
           toggleResult={this.state.toggleResult}
         />
-      </div>
+      </Wrapper>
     );
   }
 }
+
+// Styling from styled components
+
+const Title = styled.h1`
+  font-size: 5em;
+  text-align: center;
+  color: palevioletred;
+`
+const Input = styled.input`
+  font-size: 1em;
+  padding: 1vh;
+  margin: .5vh;
+  width: 20%
+`
+
+const Label = styled.label`
+  font-size: 1em;
+  font-weight: bold;
+`
+
+const Wrapper = styled.section`
+  padding: 8em;
+  font-family: 'Krub', sans-serif;
+  text-align: center;
+  font-size: 1em;
+`;
+
+const Button = styled.button`
+  background-color: palevioletred;
+  color: white;
+  border-style: groove;
+  border-radius: 10%;
+  border: 2px solid white;
+  font-size: 1em;
+  padding: 10px 20px;
+  margin: 1em;
+    :hover {
+      color: palevioletred;
+      background-color: white;
+      border: 2px solid palevioletred;
+    }
+`
+
+const Card = styled.section`
+  border: 2px solid palevioletred;
+  font-size: 1em;
+  height: 10vw;
+  text-align: center;
+  padding: 5vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-style: groove;
+  border-radius: 5%;
+  margin: 4vw 0 1vw 0;
+`
+const Bold = styled.section`
+  font-weight: bold;
+  font-size: 3em;
+  color: palevioletred;
+`
+
+const Bold2 = styled.section`
+  font-weight: bold;
+  font-size: 2em;
+  color: #B85673;
+  padding: 1em;
+`
+
+const NutritionWrapper = styled.section`
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-areas: 
+    'left right'
+`
+
+const Left = styled.section`
+  grid-area: left;
+  margin: 2em 1em 2em 0;
+  border: 1px solid #A9A9A9;
+  border-style: groove;
+  border-radius: 5%;
+  padding: 1vh;
+`
+
+const Right = styled.section`
+  grid-area: right;
+  margin: 2em 0 2em 1em;
+  border: 1px solid #A9A9A9;
+  border-style: groove;
+  border-radius: 5%;
+  padding: 1vh;
+`
+const Image = styled.img`
+  height: 50vh;
+`
+
+const FlexRow = styled.section`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 2em;
+`
 
 export default App;
