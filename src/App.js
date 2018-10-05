@@ -4,6 +4,7 @@ import { Chart } from 'react-google-charts'
 import styled from 'styled-components'
 
 class NutritionInfo extends Component {
+
   render() {
     var food0name = this.props.inputs[0].name.charAt(0).toUpperCase() + this.props.inputs[0].name.slice(1)
     var food1name = this.props.inputs[1].name.charAt(0).toUpperCase() + this.props.inputs[1].name.slice(1)
@@ -37,10 +38,13 @@ class NutritionInfo extends Component {
           <p> Calories: {this.props.inputs[0].calories} </p>
           <p> Serving Size: {this.props.inputs[0].servingSize} </p>
           <p> Serving Unit: {this.props.inputs[0].servingUnit} </p>
-          <Image src={'https://source.unsplash.com/600x500/?' + this.props.inputs[0].name} />
-            <br></br>
-            <Bold2>% Daily Calories</Bold2>
-            <FlexRow>
+          <FlexRow>
+            <Button2 onClick={this.props.handleToggleNewImage0}>New {food0name} Image</Button2>
+          </FlexRow>
+          <Image key={this.props.toggleNewImage0} src={'https://source.unsplash.com/600x500/?' + this.props.inputs[0].name + '&ignore=' + this.props.toggleNewImage0} />
+          <br></br>
+          <Bold2>% Daily Calories</Bold2>
+          <FlexRow>
             <Chart
               chartType="PieChart"
               data={[["Food", "Overall Calories"], [food0name, this.props.inputs[0].calories], ["Remaining Calories *", 2500 - this.props.inputs[0].calories]]}
@@ -48,18 +52,21 @@ class NutritionInfo extends Component {
               height={"60vh"}
               options={pieOptions}
             />
-            </FlexRow>
-            * Based on 2,500 Daily Calories
+          </FlexRow>
+          * Based on 2,500 Daily Calories
         </Left>
         <Right>
           <Bold2>{food1name} Nutrition Info</Bold2>
           <p> Calories: {this.props.inputs[1].calories} </p>
           <p> Serving Size: {this.props.inputs[1].servingSize} </p>
           <p> Serving Unit: {this.props.inputs[1].servingUnit} </p>
-          <Image src={'https://source.unsplash.com/600x500/?' + this.props.inputs[1].name} />
-            <br></br>
-            <Bold2>% Daily Calories</Bold2>
-            <FlexRow>
+          <FlexRow>
+            <Button2 onClick={this.props.handleToggleNewImage1}>New {food1name} Image</Button2>
+          </FlexRow>
+          <Image key={this.props.toggleNewImage1} src={'https://source.unsplash.com/600x500/?' + this.props.inputs[1].name + '&ignore=' + this.props.toggleNewImage1} />
+          <br></br>
+          <Bold2>% Daily Calories</Bold2>
+          <FlexRow>
             <Chart
               chartType="PieChart"
               data={[["Food", "Overall Calories"], [food1name, this.props.inputs[1].calories], ["Remaining Calories *", 2500 - this.props.inputs[0].calories]]}
@@ -67,8 +74,8 @@ class NutritionInfo extends Component {
               height={"60vh"}
               options={pieOptions}
             />
-            </FlexRow>
-            * Based on 2,500 Daily Calories
+          </FlexRow>
+          * Based on 2,500 Daily Calories
         </Right>
       </NutritionWrapper>
     )
@@ -84,35 +91,49 @@ class Result extends Component {
     var lower = Math.min(food1cal, food2cal)
     var result = Math.floor(higher / lower)
 
+    // checking if serving unit matches name
+    if (this.props.inputs[0].servingUnit == this.props.inputs[0].name) {
+      var output0result = (result * this.props.inputs[0].servingSize) + ' ' + this.props.inputs[0].name
+    }
+    else {
+      var output0result = this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].servingUnit + ' of ' + this.props.inputs[0].name
+    }
+
+    if (this.props.inputs[1].servingUnit == this.props.inputs[1].name) {
+      var output1result = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].name
+    }
+    else {
+      var output1result = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].servingUnit + ' of ' + this.props.inputs[1].name
+    }
+
 
     if (this.props.inputs[0].servingUnit == this.props.inputs[0].name) {
-      var output0 = result * this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].name
-    } 
+      var output0 = this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].name
+    }
     else {
       var output0 = this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].servingUnit + ' of ' + this.props.inputs[0].name
     }
 
     if (this.props.inputs[1].servingUnit == this.props.inputs[1].name) {
-      var output1 = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].name
-    } 
+      var output1 = this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].name
+    }
     else {
-      var output1 = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].servingUnit + ' of ' + this.props.inputs[1].name
+      var output1 = this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].servingUnit + ' of ' + this.props.inputs[1].name
     }
 
 
-    
     if (this.props.inputs[0].servingUnit == this.props.inputs[0].name) {
-      var output0plural = result * this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].name + 's'
-    } 
+      var output0pluralresult = result * this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].name + 's'
+    }
     else {
-      var output0plural = result * this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].servingUnit + ' of ' + this.props.inputs[0].name + 's'
+      var output0pluralresult = result * this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].servingUnit + 's of ' + this.props.inputs[0].name
     }
 
     if (this.props.inputs[1].servingUnit == this.props.inputs[1].name) {
-      var output1plural = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].name + 's'
-    } 
+      var output1pluralresult = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].name + 's'
+    }
     else {
-      var output1plural = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].servingUnit + ' of ' + this.props.inputs[1].name + 's'
+      var output1pluralresult = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].servingUnit + 's of ' + this.props.inputs[1].name
     }
 
 
@@ -123,10 +144,15 @@ class Result extends Component {
         return (
           <div>
             <Card>
-              You can eat <Bold>{output1plural}</Bold> per every <Bold>{output0}</Bold>
+              You can eat <Bold>{output1pluralresult}</Bold> per every <Bold>{output0}</Bold>
             </Card>
             <NutritionInfo
-              inputs={this.props.inputs} />
+              inputs={this.props.inputs}
+              toggleNewImage0={this.props.toggleNewImage0}
+              handleToggleNewImage0={this.props.handleToggleNewImage0}
+              toggleNewImage1={this.props.toggleNewImage1}
+              handleToggleNewImage1={this.props.handleToggleNewImage1}
+            />
           </div>
         )
       }
@@ -134,10 +160,15 @@ class Result extends Component {
         return (
           <div>
             <Card>
-              You can eat <Bold>{output1}</Bold> per every <Bold>{output0}</Bold>
+              You can eat <Bold>{output1result}</Bold> per every <Bold>{output0}</Bold>
             </Card>
             <NutritionInfo
-              inputs={this.props.inputs} />
+              inputs={this.props.inputs}
+              toggleNewImage0={this.props.toggleNewImage0}
+              handleToggleNewImage0={this.props.handleToggleNewImage0}
+              toggleNewImage1={this.props.toggleNewImage1}
+              handleToggleNewImage1={this.props.handleToggleNewImage1}
+            />
           </div>
         )
       }
@@ -150,10 +181,15 @@ class Result extends Component {
         return (
           <div>
             <Card>
-              You can eat <Bold>{output0plural}</Bold> per every <Bold>{output1}</Bold>
+              You can eat <Bold>{output0pluralresult}</Bold> per every <Bold>{output1}</Bold>
             </Card>
             <NutritionInfo
-              inputs={this.props.inputs} />
+              inputs={this.props.inputs}
+              toggleNewImage0={this.props.toggleNewImage0}
+              handleToggleNewImage0={this.props.handleToggleNewImage0}
+              toggleNewImage1={this.props.toggleNewImage1}
+              handleToggleNewImage1={this.props.handleToggleNewImage1}
+            />
           </div>
         )
       }
@@ -161,10 +197,15 @@ class Result extends Component {
         return (
           <div>
             <Card>
-              You can eat <Bold>{output0}</Bold> per every <Bold>{output1}</Bold>
+              You can eat <Bold>{output0result}</Bold> per every <Bold>{output1}</Bold>
             </Card>
             <NutritionInfo
-              inputs={this.props.inputs} />
+              inputs={this.props.inputs}
+              toggleNewImage0={this.props.toggleNewImage0}
+              handleToggleNewImage0={this.props.handleToggleNewImage0}
+              toggleNewImage1={this.props.toggleNewImage1}
+              handleToggleNewImage1={this.props.handleToggleNewImage1}
+            />
           </div>
         )
       }
@@ -205,15 +246,42 @@ class App extends Component {
 
     this.state = {
       inputs: [
-        { label: 'Food 1', },
-        { label: 'Food 2', },
+        {
+          label: 'Food 1',
+          name: '',
+          calories: [],
+          servingSize: [],
+          servingUnit: [],
+        },
+        {
+          label: 'Food 2',
+          name: '',
+          calories: [],
+          servingSize: [],
+          servingUnit: [],
+        },
       ],
       toggleResult: false,
+      toggleNewImage0: new Date().toISOString(),
+      toggleNewImage1: new Date().toISOString(),
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleToggleNewImage0 = this.handleToggleNewImage0.bind(this)
+    this.handleToggleNewImage1 = this.handleToggleNewImage1.bind(this)
   }
 
+  handleToggleNewImage0() {
+    this.setState({
+      toggleNewImage0: new Date().toISOString(),
+    })
+  }
+
+  handleToggleNewImage1() {
+    this.setState({
+      toggleNewImage1: new Date().toISOString(),
+    })
+  }
 
   handleInputChange(e) {
     var copyInputs = this.state.inputs.slice()
@@ -221,6 +289,9 @@ class App extends Component {
     var updatedInput = {
       label: e.target.name,
       name: e.target.value,
+      calories: [],
+      servingSize: [],
+      servingUnit: [],
     }
     copyInputs.splice(index, 1, updatedInput)
 
@@ -304,6 +375,10 @@ class App extends Component {
         <Result
           inputs={this.state.inputs}
           toggleResult={this.state.toggleResult}
+          toggleNewImage0={this.state.toggleNewImage0}
+          handleToggleNewImage0={this.handleToggleNewImage0}
+          toggleNewImage1={this.state.toggleNewImage1}
+          handleToggleNewImage1={this.handleToggleNewImage1}
         />
       </Wrapper>
     );
@@ -349,6 +424,23 @@ const Button = styled.button`
       color: palevioletred;
       background-color: white;
       border: 2px solid palevioletred;
+    }
+`
+
+const Button2 = styled.button`
+  background-color: #A9A9A9;
+  color: white;
+  border-style: groove;
+  border-radius: 10%;
+  border: 2px solid white;
+  font-size: 1em;
+  padding: 10px 20px;
+  width: 30vw;
+  margin: 1em;
+    :hover {
+      color: #A9A9A9;
+      background-color: white;
+      border: 2px solid #A9A9A9;
     }
 `
 
