@@ -84,14 +84,46 @@ class Result extends Component {
     var lower = Math.min(food1cal, food2cal)
     var result = Math.floor(higher / lower)
 
-    // checking which food is higher then matching with result from above
+
+    if (this.props.inputs[0].servingUnit == this.props.inputs[0].name) {
+      var output0 = result * this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].name
+    } 
+    else {
+      var output0 = this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].servingUnit + ' of ' + this.props.inputs[0].name
+    }
+
+    if (this.props.inputs[1].servingUnit == this.props.inputs[1].name) {
+      var output1 = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].name
+    } 
+    else {
+      var output1 = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].servingUnit + ' of ' + this.props.inputs[1].name
+    }
+
+
+    
+    if (this.props.inputs[0].servingUnit == this.props.inputs[0].name) {
+      var output0plural = result * this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].name + 's'
+    } 
+    else {
+      var output0plural = result * this.props.inputs[0].servingSize + ' ' + this.props.inputs[0].servingUnit + ' of ' + this.props.inputs[0].name + 's'
+    }
+
+    if (this.props.inputs[1].servingUnit == this.props.inputs[1].name) {
+      var output1plural = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].name + 's'
+    } 
+    else {
+      var output1plural = result * this.props.inputs[1].servingSize + ' ' + this.props.inputs[1].servingUnit + ' of ' + this.props.inputs[1].name + 's'
+    }
+
+
+    // if second food is higher, return second food first
     if (this.props.inputs[0].calories > this.props.inputs[1].calories) {
-      //first one is plural
+      //checking if plural
       if ((result * this.props.inputs[1].servingSize) > 1) {
         return (
           <div>
             <Card>
-              You can eat <Bold>{result * this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit}s</Bold> of {this.props.inputs[1].name}s per every <Bold>{this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit}</Bold> of {this.props.inputs[0].name}
+              You can eat <Bold>{output1plural}</Bold> per every <Bold>{output0}</Bold>
             </Card>
             <NutritionInfo
               inputs={this.props.inputs} />
@@ -102,7 +134,7 @@ class Result extends Component {
         return (
           <div>
             <Card>
-              You can eat <Bold>{result * this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit}</Bold> of {this.props.inputs[1].name} per every <Bold>{this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit}</Bold> of {this.props.inputs[0].name}
+              You can eat <Bold>{output1}</Bold> per every <Bold>{output0}</Bold>
             </Card>
             <NutritionInfo
               inputs={this.props.inputs} />
@@ -111,13 +143,14 @@ class Result extends Component {
       }
     }
 
+    // if first food is higher, return first food first
     if (this.props.inputs[1].calories > this.props.inputs[0].calories) {
-      //first one is plural
+      //checking if plural
       if ((result * this.props.inputs[0].servingSize) > 1) {
         return (
           <div>
             <Card>
-              You can eat <Bold>{result * this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit}s</Bold> of {this.props.inputs[0].name}s per every <Bold>{this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit}</Bold> of {this.props.inputs[1].name}
+              You can eat <Bold>{output0plural}</Bold> per every <Bold>{output1}</Bold>
             </Card>
             <NutritionInfo
               inputs={this.props.inputs} />
@@ -128,7 +161,7 @@ class Result extends Component {
         return (
           <div>
             <Card>
-              You can eat <Bold>{result * this.props.inputs[0].servingSize} {this.props.inputs[0].servingUnit}</Bold> of {this.props.inputs[0].name} per every <Bold>{this.props.inputs[1].servingSize} {this.props.inputs[1].servingUnit}</Bold> of {this.props.inputs[1].name}
+              You can eat <Bold>{output0}</Bold> per every <Bold>{output1}</Bold>
             </Card>
             <NutritionInfo
               inputs={this.props.inputs} />
