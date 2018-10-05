@@ -226,7 +226,7 @@ class App extends Component {
     axios({
       method: 'get',
       url: 'https://nutritionix-api.p.mashape.com/v1_1/search/' + this.state.inputs[1].name + '?fields=nf_calories%2Cnf_serving_size_qty%2Cnf_serving_size_unit',
-      headers: { 'X-Mashape-Key': 'WKq2QQHxgymsh6gCFbBhuUSEqA8Rp1Abq9XjsnbkTTjFDcnsWu' },
+      headers: { 'X-Mashape-Key': process.env.REACT_APP_KEY },
     })
       .then(response => {
         var dataCalories = response.data.hits[0].fields.nf_calories
