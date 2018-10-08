@@ -22,12 +22,9 @@ class NutritionInfo extends Component {
           fontSize: 14
         }
       },
-      chartArea: {
-        left: 0,
-        top: 0,
-        width: "100%",
-        height: "80%"
-      },
+      width: "100%",
+      height: "60vh",
+      padding: "0",
       fontName: "Arial"
     };
 
@@ -43,17 +40,17 @@ class NutritionInfo extends Component {
           </FlexRow>
           <Image key={this.props.toggleNewImage0} src={'https://source.unsplash.com/600x500/?' + this.props.inputs[0].name + '&ignore=' + this.props.toggleNewImage0} />
           <br></br>
-          <Bold2>% Daily Calories</Bold2>
+          <Bold3>% Daily Calories</Bold3>
           <FlexRow>
             <Chart
               chartType="PieChart"
               data={[["Food", "Overall Calories"], [food0name, this.props.inputs[0].calories], ["Remaining Calories *", 2500 - this.props.inputs[0].calories]]}
-              width={"60vh"}
-              height={"60vh"}
               options={pieOptions}
             />
           </FlexRow>
-          * Based on 2,500 Daily Calories
+          <Legend>
+            * Based on 2,500 Daily Calories
+          </Legend>
         </Left>
         <Right>
           <Bold2>{food1name} Nutrition Info</Bold2>
@@ -65,17 +62,17 @@ class NutritionInfo extends Component {
           </FlexRow>
           <Image key={this.props.toggleNewImage1} src={'https://source.unsplash.com/600x500/?' + this.props.inputs[1].name + '&ignore=' + this.props.toggleNewImage1} />
           <br></br>
-          <Bold2>% Daily Calories</Bold2>
+          <Bold3>% Daily Calories</Bold3>
           <FlexRow>
             <Chart
               chartType="PieChart"
-              data={[["Food", "Overall Calories"], [food1name, this.props.inputs[1].calories], ["Remaining Calories *", 2500 - this.props.inputs[0].calories]]}
-              width={"60vh"}
-              height={"60vh"}
+              data={[["Food", "Overall Calories"], [food1name, this.props.inputs[1].calories], ["Remaining Calories *", 2500 - this.props.inputs[1].calories]]}
               options={pieOptions}
             />
           </FlexRow>
-          * Based on 2,500 Daily Calories
+          <Legend>
+            * Based on 2,500 Daily Calories
+          </Legend>
         </Right>
       </NutritionWrapper>
     )
@@ -409,6 +406,12 @@ const Wrapper = styled.section`
   font-family: 'Krub', sans-serif;
   text-align: center;
   font-size: 1em;
+
+  @media (max-width: 700px) {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
 `;
 
 const Button = styled.button`
@@ -447,7 +450,6 @@ const Button2 = styled.button`
 const Card = styled.section`
   border: 2px solid palevioletred;
   font-size: 1em;
-  height: 10vw;
   text-align: center;
   padding: 5vw;
   display: flex;
@@ -461,6 +463,10 @@ const Bold = styled.section`
   font-weight: bold;
   font-size: 3em;
   color: palevioletred;
+
+  @media (max-width: 700px) {
+    font-size: 2em;
+  }
 `
 
 const Bold2 = styled.section`
@@ -470,11 +476,23 @@ const Bold2 = styled.section`
   padding: 1em;
 `
 
+const Bold3 = styled.section`
+  font-weight: bold;
+  font-size: 2em;
+  color: #B85673;
+  padding: 0 1em 0 1em;
+`
+
 const NutritionWrapper = styled.section`
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-areas: 
-    'left right'
+    'left right';
+
+    @media (max-width: 700px) {
+      display: flex;
+      flex-direction: column;
+    }
 `
 
 const Left = styled.section`
@@ -495,13 +513,18 @@ const Right = styled.section`
   padding: 1vh;
 `
 const Image = styled.img`
-  height: 50vh;
+  height: auto;
+  width: 100%;
+  padding: 2em 0 2em 0;
 `
 
 const FlexRow = styled.section`
   display: flex;
   flex-direction: row;
   justify-content: center;
+`
+
+const Legend = styled.section`
   padding: 2em;
 `
 
